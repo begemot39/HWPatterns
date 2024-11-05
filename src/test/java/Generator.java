@@ -1,6 +1,5 @@
 import com.github.javafaker.Faker;
 import lombok.Value;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -24,24 +23,35 @@ public class Generator {
         return LocalDate.now().plusDays(days).format( DateTimeFormatter.ofPattern( pattern ));
     }
 
-    Faker faker = new Faker(new Locale("ru-Ru", "Russia"));
+    public static Faker faker = new Faker(new Locale("ru-Ru", "Russia"));
 
-    public  String generateTestCity() {
-        return faker.address().city();
+    public static String getRandomCity() {
+        String[] city = {"Москва", "Нижний Новгород", "Тверь", "Рязань", "Тюмень", "Казань", "Новосибирск", "Санкт-Петербург"};
+        return city[new Random().nextInt(city.length)];
     }
 
-    public  String generatetestUserName() {
+
+    public static  String generateTestUserName() {
         return faker.name().fullName();
     }
 
-    public String generateTestPhone() {
+    public static String generateTestPhone() {
         return faker.phoneNumber().phoneNumber().replaceAll("[()\\-]", "");
     }
 
-//    @Value
-//    public static class UserInfo {
-//        String city;
-//        String name;
-//        String phone;
-//    }
+    public static class TestUserReg {
+        private TestUserReg() {
+        }
+
+        public static UserInfo generatorUsers() {
+            return new UserInfo(getRandomCity(), generateTestUserName(), generateTestPhone());
+        }
+    }
+
+    @Value
+    public static class UserInfo {
+        String city;
+        String name;
+        String phone;
+    }
 }
